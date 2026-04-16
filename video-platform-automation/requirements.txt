@@ -1,0 +1,37 @@
+# PyTorch dependencies (already included in base image, but pin versions for reproducibility)
+torch>=2.2.1
+torchvision>=0.17.1
+torchaudio>=2.2.1
+
+# Diffusion models
+diffusers>=0.27.0
+transformers>=4.39.0
+accelerate>=0.27.0
+
+# MusicGen (AudioCraft)
+# Installed from git clone in Dockerfile
+
+# Image processing
+Pillow>=10.3.0
+opencv-python-headless>=4.9.0
+
+# Video/audio processing
+ffmpeg-python>=0.2.0
+
+# API clients
+google-api-python-client>=2.119.0
+google-auth-httplib2>=0.2.0
+google-auth-oauthlib>=1.2.0
+
+# Utilities
+python-dotenv>=1.0.0
+pyyaml>=6.0.1
+requests>=2.31.0
+tqdm>=4.66.0
+
+# Progress and logging
+rich>=13.7.0
+
+# Optional: Better TTS (ElevenLabs)
+# Uncomment if needed
+# elevenlabs>=1.0.0

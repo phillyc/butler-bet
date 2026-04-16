@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  video-pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: video-pipeline-${CHANNEL_ID:-default}
+    
+    # GPU support
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    
+    # Environment variables (override with .env file or CLI)
+    environment:
+      - HF_TOKEN=${HF_TOKEN:-}
+      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY:-}
+      - LLM_API_KEY=${LLM_API_KEY:-}
+      - CHANNEL_ID=${CHANNEL_ID:-default}
+      - OUTPUT_DIR=/app/output/${CHANNEL_ID:-default}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    
+    # Volumes: cache models, persist outputs, share config
+    volumes:
+      - ./models:/app/models:rw
+      - ./output:/app/output:rw
+      - ./config:/app/config:rw
+      - ./logs:/app/logs:rw
+    
+    # Network mode: bridge (default), use host if needed
+    # network_mode: host
+    
+    # Resource limits (optional, adjust based on your GPU)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 16G
+    #     reservations:
+    #       memory: 8G
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import torch; print('OK')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    # Restart policy: always restart on failure
+    restart: unless-stopped
+
+# Named volumes for multi-container setup (if we go microservices later)
+volumes:
+  model-cache:
+  output-cache:
+  config-cache:
