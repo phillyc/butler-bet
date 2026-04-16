@@ -81,6 +81,65 @@ cd video-platform-automation
 pip install -r requirements.txt
 ```
 
+## Quick Start
+
+### Local Development
+
+```bash
+# Clone repo
+git clone https://github.com/phillyc/video-platform-automation.git
+cd video-platform-automation
+
+# Build Docker image (first time only)
+docker compose build
+
+# Run music playlist pipeline
+./run.sh --niche music --prompt "wizards forest chill downtempo" --channel-id test1
+
+# Monitor output
+./run.sh --channel-id test1 --logs
+
+# Try different niches
+./run.sh --niche storytime --prompt "roman empire history sleep" --channel-id test2
+```
+
+### AWS Deployment
+
+```bash
+# Same Docker image, just different deployment
+docker tag video-pipeline:latest <aws-ecr-url>.dkr.ecr.<region>.amazonaws.com/video-pipeline:latest
+docker push <aws-ecr-url>.dkr.ecr.<region>.amazonaws.com/video-pipeline:latest
+
+# Run on ECS/Fargate (see infrastructure-design.md)
+aws ecs run-task --cluster video-pipeline --task-definition video-pipeline:1
+```
+
+### Environment Variables
+
+Create a `.env` file:
+
+```bash
+HF_TOKEN=your_huggingface_token
+YOUTUBE_API_KEY=your_youtube_api_key
+LLM_API_KEY=your_llm_api_key
+```
+
+Or set directly:
+```bash
+export HF_TOKEN=...
+export YOUTUBE_API_KEY=...
+```
+
+### Running Locally (No Docker)
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run directly
+python orchestrator/main.py --config config/default/config.yaml
+```
+
 ## Contributing
 
 Found a useful tool or have a project to add? Open a PR!
