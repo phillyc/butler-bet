@@ -10,7 +10,8 @@ docker compose build
 ```
 
 The `name: video-platform-automation` in `docker-compose.yml` should fix this.
-**Solution:** Install NVIDIA Container Toolkit:
+
+### "NVIDIA runtime not detected"
 
 **Ubuntu/Debian:**
 ```bash
