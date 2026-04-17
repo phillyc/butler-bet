@@ -30,9 +30,12 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python packages - UPGRADE torchvision first to fix compatibility
+# Install Python packages - FORCE reinstall all torch packages to match base image
+# This fixes torchaudio libtorchaudio.so symbol errors
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir torchvision==0.17.2 transformers==4.41.2 diffusers==0.27.2 \
+    && pip install --no-cache-dir --force-reinstall --no-deps \
+        torch==2.2.1 torchvision==0.17.1 torchaudio==2.2.1 \
+    && pip install --no-cache-dir transformers==4.41.2 diffusers==0.27.2 accelerate==0.31.0 \
     && pip install --no-cache-dir -r requirements.txt
 
 # ============================================
@@ -69,7 +72,7 @@ RUN mkdir -p /app/models /app/output /app/config /app/logs
 # Health Check
 # ============================================
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD python -c "import torch; import torchvision; import diffusers; print('OK')" || exit 1
+    CMD python -c "import torch; import torchvision; import torchaudio; import diffusers; print('OK')" || exit 1
 
 # ============================================
 # Entry Point

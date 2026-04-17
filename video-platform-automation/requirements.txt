@@ -1,5 +1,6 @@
-# PyTorch dependencies (pre-installed in base image, but pin versions for reproducibility)
-# The base image has torch==2.2.1, torchvision==0.17.1, torchaudio==2.2.1 - these must stay compatible
+# PyTorch dependencies - ALL MUST MATCH the base image exactly
+# Base image: pytorch/pytorch:2.2.1-cuda12.1-cudnn8-runtime
+# Contains: torch==2.2.1, torchvision==0.17.1, torchaudio==2.2.1
 torch==2.2.1
 torchvision==0.17.1
 torchaudio==2.2.1
@@ -8,9 +9,6 @@ torchaudio==2.2.1
 diffusers==0.27.2
 transformers==4.41.2
 accelerate==0.31.0
-
-# MusicGen (AudioCraft) - installed from git, pulls its own dependencies
-# Installed from git clone in Dockerfile
 
 # Image processing
 Pillow>=10.3.0
@@ -32,7 +30,3 @@ tqdm>=4.66.0
 
 # Progress and logging
 rich>=13.7.0
-
-# Optional: Better TTS (ElevenLabs)
-# Uncomment if needed
-# elevenlabs>=1.0.0
