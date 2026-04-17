@@ -13,7 +13,7 @@ The `name: video-platform-automation` in `docker-compose.yml` should fix this.
 
 ### "NVIDIA runtime not detected"
 
-**Ubuntu/Debian:**
+**Solution:** Install NVIDIA Container Toolkit:
 ```bash
 # Add NVIDIA repository
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit.gpg
