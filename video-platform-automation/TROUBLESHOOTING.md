@@ -11,6 +11,11 @@ docker compose build
 
 The `name: video-platform-automation` in `docker-compose.yml` should fix this.
 
+**Note:** There's one service (`pipeline`) but multiple containers. Each run creates a container named `video-pipeline-<channel-id>`. To see all containers:
+```bash
+docker compose ps
+```
+
 ### "NVIDIA runtime not detected"
 
 **Solution:** Install NVIDIA Container Toolkit:
