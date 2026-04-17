@@ -19,6 +19,8 @@ docker compose ps
 ### "NVIDIA runtime not detected"
 
 **Solution:** Install NVIDIA Container Toolkit:
+
+**Ubuntu/Debian:**
 ```bash
 # Add NVIDIA repository
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit.gpg
@@ -41,32 +43,16 @@ docker info | grep nvidia
 - NVIDIA Container Toolkit is included
 - Make sure "Use NVIDIA GPU" is enabled in Docker Desktop settings
 
-### "Cannot connect to the Docker daemon"
-**Solution:** Start Docker:
-```bash
-# Linux
-sudo systemctl start docker
+## Build/Runtime Errors
 
-# macOS/Windows
-# Start Docker Desktop app
+### "RuntimeError: operator torchvision::nms does not exist"
+**Cause:** torchvision/transformers version incompatibility
+**Solution:** Rebuild with updated image (already fixed in repo):
+```bash
+./run.sh --rebuild
 ```
 
-## Build Errors
-
-### "CUDA version mismatch"
-**Solution:** Your GPU is RTX 4070 (Compute Capability 8.9), which supports CUDA 12.1. The Dockerfile uses `pytorch/pytorch:2.2.1-cuda12.1-cudnn8-runtime` which is correct.
-
-If you get CUDA errors, update your NVIDIA drivers:
-```bash
-sudo apt install nvidia-driver-550
-```
-
-### "Out of memory building image"
-**Solution:** Allocate more memory to Docker:
-- Docker Desktop → Settings → Resources → Memory (set to 8GB+)
-- Or build with less model caching
-
-## Runtime Errors
+This updates torchvision to 0.17.2 which is compatible with the transformers version.
 
 ### "No module named 'audiocraft'"
 **Solution:** MusicGen installation failed. Rebuild:
@@ -74,17 +60,16 @@ sudo apt install nvidia-driver-550
 ./run.sh --rebuild
 ```
 
-### "No GPU available, falling back to CPU"
-**Solution:** See "NVIDIA runtime not detected" above. Without GPU, builds will be 10-100x slower.
+### "CUDA out of memory"
+**Solution:** Your GPU doesn't have enough VRAM for the model:
+- Stable Diffusion v1.5 needs ~4GB VRAM minimum
+- MusicGen needs ~2GB VRAM minimum
+- You have RTX 4070 (8GB) which should be sufficient
 
-### "YouTube API authentication failed"
-**Solution:** You need OAuth credentials:
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a project
-3. Enable YouTube Data API v3
-4. Create OAuth 2.0 credentials (Desktop app)
-5. Download `credentials.json` to repo root
-6. Run pipeline once to generate token
+If still failing, try:
+1. Close other GPU applications
+2. Use smaller batch sizes (not exposed in current UI)
+3. Run on CPU (much slower): `./run.sh --cpu`
 
 ## GPU on Laptop (RTX 4070)
 
@@ -109,6 +94,8 @@ If GPU isn't working, run in CPU mode (much slower but functional):
 ./run.sh --cpu --niche music --prompt "chill forest"
 ```
 
+**Warning:** CPU generation will be 10-100x slower than GPU.
+
 ## Environment Variables
 
 Create a `.env` file in the repo root:
@@ -121,4 +108,39 @@ LLM_API_KEY=your_llm_api_key
 Then just run:
 ```bash
 ./run.sh --niche music --prompt "chill forest"
+```
+
+## Docker Specific Issues
+
+### "Failed to resolve Docker Compose project name"
+**Solution:** Make sure `docker-compose.yml` is in the same directory as `run.sh`:
+```bash
+cd video-platform-automation
+docker compose build
+```
+
+### Container exits immediately with no logs
+**Solution:** The pipeline may have finished quickly (no prompt provided):
+```bash
+# Check if container exited
+docker compose ps
+
+# View logs
+./run.sh --logs
+
+# Run with prompt
+./run.sh --niche music --prompt "your prompt here" --channel-id test1
+```
+
+### "Permission denied" on output files
+**Solution:** The container creates files as root, so they're owned by root:
+```bash
+# Fix permissions
+sudo chown -R $USER:$USER output/ config/ logs/
+```
+
+Or rebuild the container:
+```bash
+./run.sh --stop
+./run.sh --niche music --prompt "chill forest" --channel-id test1
 ```
