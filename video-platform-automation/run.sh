@@ -160,8 +160,8 @@ fi
 # Stop existing container if running
 if $STOP; then
     echo -e "${BLUE}Stopping existing container...${NC}"
-    docker compose stop video-pipeline-${CHANNEL_ID} 2>/dev/null || true
-    docker compose rm -f video-pipeline-${CHANNEL_ID} 2>/dev/null || true
+    docker compose stop --time 30 2>/dev/null || true
+    docker compose rm -f 2>/dev/null || true
     echo -e "${GREEN}Done${NC}"
     exit 0
 fi
@@ -182,11 +182,11 @@ fi
 if $EXISTING; then
     echo -e "${BLUE}Using existing container...${NC}"
     if $LOGS; then
-        docker compose logs -f --tail=100 video-pipeline-${CHANNEL_ID}
+        docker compose logs -f --tail=100 2>/dev/null || echo -e "${YELLOW}No running containers found${NC}"
     elif $SHELL; then
-        docker compose exec video-pipeline-${CHANNEL_ID} /bin/bash
+        docker compose exec pipeline /bin/bash 2>/dev/null || echo -e "${YELLOW}No running containers found${NC}"
     else
-        echo -e "${GREEN}Container running: video-pipeline-${CHANNEL_ID}${NC}"
+        docker compose ps
         echo -e "${YELLOW}Use --logs or --shell for more options${NC}"
     fi
     exit 0
@@ -195,14 +195,14 @@ fi
 # Show logs if requested
 if $LOGS; then
     echo -e "${BLUE}Showing logs...${NC}"
-    docker compose logs -f --tail=100 video-pipeline-${CHANNEL_ID}
+    docker compose logs -f --tail=100 2>/dev/null || echo -e "${YELLOW}No running containers found${NC}"
     exit 0
 fi
 
 # Open shell if requested
 if $SHELL; then
     echo -e "${BLUE}Opening shell...${NC}"
-    docker compose exec video-pipeline-${CHANNEL_ID} /bin/bash
+    docker compose exec pipeline /bin/bash 2>/dev/null || echo -e "${YELLOW}No running containers found${NC}"
     exit 0
 fi
 
@@ -226,13 +226,13 @@ EOF
 if ! $EXISTING; then
     echo -e "${BLUE}Starting pipeline...${NC}"
     if $GPU; then
-        docker compose up -d video-pipeline-${CHANNEL_ID}
+        CHANNEL_ID=${CHANNEL_ID} docker compose up -d pipeline
         echo -e "${GREEN}Container started: video-pipeline-${CHANNEL_ID}${NC}"
-        echo -e "${YELLOW}Monitor logs with: ./run.sh --channel-id $CHANNEL_ID --logs${NC}"
+        echo -e "${YELLOW}Monitor logs with: ./run.sh --logs${NC}"
     else
         # CPU mode
         echo -e "${YELLOW}Running without GPU (much slower)${NC}"
-        docker compose up video-pipeline-${CHANNEL_ID}
+        CHANNEL_ID=${CHANNEL_ID} docker compose up pipeline
         echo -e "${GREEN}Pipeline completed (CPU mode)${NC}"
     fi
 fi
@@ -240,7 +240,7 @@ fi
 # Show container status
 echo ""
 echo -e "${BLUE}Container Status:${NC}"
-docker compose ps video-pipeline-${CHANNEL_ID}
+docker compose ps
 
 echo ""
 echo -e "${GREEN}Done!${NC}"
