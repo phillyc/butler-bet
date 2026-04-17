@@ -52,7 +52,16 @@ docker info | grep nvidia
 ./run.sh --rebuild
 ```
 
-This updates torchvision to 0.17.2 which is compatible with the transformers version.
+This upgrades torchvision to 0.17.2 which is compatible with the transformers version.
+
+### "OSError: Could not load this library: .../libtorchaudio.so: undefined symbol"
+**Cause:** torchaudio was compiled against a different PyTorch version than what's running
+**Solution:** Rebuild with force-reinstall of torch packages (already fixed in repo):
+```bash
+./run.sh --rebuild
+```
+
+The Dockerfile now uses `--force-reinstall --no-deps` to ensure torchaudio matches the base image's PyTorch version exactly.
 
 ### "No module named 'audiocraft'"
 **Solution:** MusicGen installation failed. Rebuild:
