@@ -11,13 +11,13 @@
 #   --prompt <string>                    Input prompt for the pipeline
 #   --channel-id <id>                    Channel identifier (default: default)
 #   --build                              Build image before running
-#   --rebuild                            Force rebuild image
+#   --rebuild                            Force rebuild image (no cache)
 #   --existing                           Use existing container
 #   --stop                               Stop running container
 #   --logs                               Show container logs
 #   --shell                              Open shell in container
 #   --gpu                                Use GPU (default on NVIDIA systems)
-#   --cpu                                Use CPU only (no GPU)
+#   --cpu                                Use CPU only (no GPU, slower)
 #   --help                               Show this help
 #
 
@@ -134,16 +134,7 @@ if ! docker info &> /dev/null; then
     exit 1
 fi
 
-# Build command based on GPU support
-if $GPU; then
-    # Check for NVIDIA runtime
-    if ! docker info 2>&1 | grep -q "nvidia"; then
-        echo -e "${YELLOW}NVIDIA runtime not detected, using CPU mode${NC}"
-        echo -e "${YELLOW}Make sure you have NVIDIA Container Toolkit installed${NC}"
-        GPU=false
-    fi
-fi
-
+# Build and display info
 echo -e "${BLUE}=================================================${NC}"
 echo -e "${BLUE}  Video Platform Automation Pipeline${NC}"
 echo -e "${BLUE}=================================================${NC}"
@@ -156,6 +147,15 @@ else
     echo -e "${YELLOW}Warning: No prompt provided, using default${NC}"
 fi
 echo ""
+
+# Check for NVIDIA runtime
+if $GPU; then
+    if ! docker info 2>&1 | grep -q "nvidia"; then
+        echo -e "${YELLOW}NVIDIA runtime not detected, using CPU mode${NC}"
+        echo -e "${YELLOW}Make sure you have NVIDIA Container Toolkit installed${NC}"
+        GPU=false
+    fi
+fi
 
 # Stop existing container if running
 if $STOP; then
@@ -182,9 +182,9 @@ fi
 if $EXISTING; then
     echo -e "${BLUE}Using existing container...${NC}"
     if $LOGS; then
-        docker compose -f docker-compose.yml logs -f --tail=100 video-pipeline-${CHANNEL_ID}
+        docker compose logs -f --tail=100 video-pipeline-${CHANNEL_ID}
     elif $SHELL; then
-        docker compose -f docker-compose.yml exec video-pipeline-${CHANNEL_ID} /bin/bash
+        docker compose exec video-pipeline-${CHANNEL_ID} /bin/bash
     else
         echo -e "${GREEN}Container running: video-pipeline-${CHANNEL_ID}${NC}"
         echo -e "${YELLOW}Use --logs or --shell for more options${NC}"
