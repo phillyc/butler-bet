@@ -1,14 +1,15 @@
-# PyTorch dependencies (already included in base image, but pin versions for reproducibility)
-torch>=2.2.1
-torchvision>=0.17.1
-torchaudio>=2.2.1
+# PyTorch dependencies (pre-installed in base image, but pin versions for reproducibility)
+# The base image has torch==2.2.1, torchvision==0.17.1, torchaudio==2.2.1 - these must stay compatible
+torch==2.2.1
+torchvision==0.17.1
+torchaudio==2.2.1
 
-# Diffusion models
-diffusers>=0.27.0
-transformers>=4.39.0
-accelerate>=0.27.0
+# Diffusion models - pinned to versions compatible with PyTorch 2.2.1
+diffusers==0.27.2
+transformers==4.41.2
+accelerate==0.31.0
 
-# MusicGen (AudioCraft)
+# MusicGen (AudioCraft) - installed from git, pulls its own dependencies
 # Installed from git clone in Dockerfile
 
 # Image processing

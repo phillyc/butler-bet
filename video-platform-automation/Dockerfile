@@ -30,8 +30,9 @@ WORKDIR /app
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python packages
+# Install Python packages - UPGRADE torchvision first to fix compatibility
 RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir torchvision==0.17.2 transformers==4.41.2 diffusers==0.27.2 \
     && pip install --no-cache-dir -r requirements.txt
 
 # ============================================
@@ -50,9 +51,9 @@ WORKDIR /app
 # Download Default Models (on first build)
 # ============================================
 # This ensures models are cached in the image
-RUN python -c "from audiocraft.models import MusicGen; MusicGen.get_pretrained('melody_10s'); from huggingface_hub import hf_hub_download; hf_hub_download(repo_id='facebook/musicgen-small', filename='melody_10s.pt')" 2>/dev/null || true
+RUN python -c "from audiocraft.models import MusicGen; MusicGen.get_pretrained('melody_10s')" 2>/dev/null || true
 
-RUN python -c "from diffusers import StableDiffusionPipeline; StableDiffusionPipeline.from_pretrained('runwayml/stable-diffusion-v1-5'); from huggingface_hub import hf_hub_download; hf_hub_download(repo_id='runwayml/stable-diffusion-v1-5', filename='v1-5-pruned-emaonly.ckpt')" 2>/dev/null || true
+RUN python -c "from diffusers import StableDiffusionPipeline; StableDiffusionPipeline.from_pretrained('runwayml/stable-diffusion-v1-5')" 2>/dev/null || true
 
 # ============================================
 # Copy Application Code
