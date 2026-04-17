@@ -131,6 +131,7 @@ if $GPU; then
     # Check for NVIDIA runtime
     if ! docker info 2>&1 | grep -q "nvidia"; then
         echo -e "${YELLOW}NVIDIA runtime not detected, using CPU mode${NC}"
+        echo -e "${YELLOW}Make sure you have NVIDIA Container Toolkit installed${NC}"
         GPU=false
     fi
 fi
@@ -151,8 +152,8 @@ echo ""
 # Stop existing container if running
 if $STOP; then
     echo -e "${BLUE}Stopping existing container...${NC}"
-    docker compose -f docker-compose.yml stop video-pipeline-${CHANNEL_ID} 2>/dev/null || true
-    docker compose -f docker-compose.yml rm -f video-pipeline-${CHANNEL_ID} 2>/dev/null || true
+    docker compose stop video-pipeline-${CHANNEL_ID} 2>/dev/null || true
+    docker compose rm -f video-pipeline-${CHANNEL_ID} 2>/dev/null || true
     echo -e "${GREEN}Done${NC}"
     exit 0
 fi
@@ -161,9 +162,9 @@ fi
 if $REBUILD || $BUILD; then
     echo -e "${BLUE}Building Docker image...${NC}"
     if $REBUILD; then
-        docker compose -f docker-compose.yml build --no-cache
+        docker compose build --no-cache
     else
-        docker compose -f docker-compose.yml build
+        docker compose build
     fi
     echo -e "${GREEN}Build complete${NC}"
     echo ""
@@ -186,14 +187,14 @@ fi
 # Show logs if requested
 if $LOGS; then
     echo -e "${BLUE}Showing logs...${NC}"
-    docker compose -f docker-compose.yml logs -f --tail=100 video-pipeline-${CHANNEL_ID}
+    docker compose logs -f --tail=100 video-pipeline-${CHANNEL_ID}
     exit 0
 fi
 
 # Open shell if requested
 if $SHELL; then
     echo -e "${BLUE}Opening shell...${NC}"
-    docker compose -f docker-compose.yml exec video-pipeline-${CHANNEL_ID} /bin/bash
+    docker compose exec video-pipeline-${CHANNEL_ID} /bin/bash
     exit 0
 fi
 
@@ -217,12 +218,13 @@ EOF
 if ! $EXISTING; then
     echo -e "${BLUE}Starting pipeline...${NC}"
     if $GPU; then
-        docker compose -f docker-compose.yml up -d video-pipeline-${CHANNEL_ID}
+        docker compose up -d video-pipeline-${CHANNEL_ID}
         echo -e "${GREEN}Container started: video-pipeline-${CHANNEL_ID}${NC}"
         echo -e "${YELLOW}Monitor logs with: ./run.sh --channel-id $CHANNEL_ID --logs${NC}"
     else
-        # CPU mode - need to override environment variable
-        GPU=false docker compose -f docker-compose.yml up video-pipeline-${CHANNEL_ID}
+        # CPU mode
+        echo -e "${YELLOW}Running without GPU (much slower)${NC}"
+        docker compose up video-pipeline-${CHANNEL_ID}
         echo -e "${GREEN}Pipeline completed (CPU mode)${NC}"
     fi
 fi
@@ -230,7 +232,7 @@ fi
 # Show container status
 echo ""
 echo -e "${BLUE}Container Status:${NC}"
-docker compose -f docker-compose.yml ps video-pipeline-${CHANNEL_ID}
+docker compose ps video-pipeline-${CHANNEL_ID}
 
 echo ""
 echo -e "${GREEN}Done!${NC}"
