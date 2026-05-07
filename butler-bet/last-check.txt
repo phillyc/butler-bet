@@ -1,0 +1,4 @@
+Date checked: May 5, 2026
+Last checked on index.html: April 22, 2026
+
+Summary: No robot currently meets all three bet criteria. Unitree G1 ($13,500) is available in the US and has dexterous manipulation, but no public evidence confirms autonomous dishes/trash handling. Zeroth W1 ($5,599) and M1 ($2,899) are available for purchase but cannot perform household chores. Tesla Optimus not yet available (production expected 2026/2027). SwitchBot Onero H1 announced at CES 2026 with laundry demos but no confirmed US availability. No material change from last check - bet remains unwon.
