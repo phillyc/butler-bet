@@ -1,9 +1,19 @@
-May 15, 2026 - Daily Butler Bet check - Answer remains "No"
+May 29, 2026 - No Material Change
 
-Research findings:
-- No new humanoid robots have entered US consumer availability since May 14, 2026
-- All tracked robots (Tesla Optimus, Figure AI, Unitree G1, Boston Dynamics Atlas, XPeng Iron, Agibot A2, Honda Aoyama, Sunday Robotics, SwitchBot Onero) still fail to meet all three criteria
-- No robot is simultaneously: (1) available for US consumer purchase, (2) under $40K, AND (3) demonstrated capable of household chores like dishes and trash
-- Closest remains Tesla Optimus (announced $30K) but still in pre-production/waitlist, and Unitree G1 (available but ~$90K+ and limited chore capability)
+Findings: No material changes since May 16 check. Answer remains "Yes — Unitree G1."
 
-CONCLUSION: No material change. Answer remains "No."
+Unitree G1 still available on shop.unitree.com at $13,500 with Add to Cart working. No price changes or availability changes for any tracked robot.
+
+Recent notable but non-qualifying developments:
+- Amazon acquired Fauna Robotics (Sprout, $50K, research platform — not consumer)
+- Weave Isaac 0 ($7,999 stationary laundry folder, teleoperation required — not a general butler)
+- Roomba creator launched furry companion robot (companion, not butler)
+- No new consumer humanoid butler robots have gone on sale since last check
+
+Other robots tracked (no change in status):
+- 1X NEO: Still pre-order at $20K, deliveries "starting 2026"
+- Tesla Optimus Gen 3: Still not available for consumer purchase
+- Figure 03: Industrial lease only
+- SwitchBot Onero H1: Still "soon" from CES 2026 announcement
+- Boston Dynamics Atlas: Industrial/research use only
+- None of the above have become available for US consumer purchase at ≤$40K with household chore capability since last check.
