@@ -1,19 +1,5 @@
-May 29, 2026 - No Material Change
+June 07, 2026 - No Material Change
 
-Findings: No material changes since May 16 check. Answer remains "Yes — Unitree G1."
+Findings: No material changes since May 29 check. Answer remains "Yes — Unitree G1."
 
-Unitree G1 still available on shop.unitree.com at $13,500 with Add to Cart working. No price changes or availability changes for any tracked robot.
-
-Recent notable but non-qualifying developments:
-- Amazon acquired Fauna Robotics (Sprout, $50K, research platform — not consumer)
-- Weave Isaac 0 ($7,999 stationary laundry folder, teleoperation required — not a general butler)
-- Roomba creator launched furry companion robot (companion, not butler)
-- No new consumer humanoid butler robots have gone on sale since last check
-
-Other robots tracked (no change in status):
-- 1X NEO: Still pre-order at $20K, deliveries "starting 2026"
-- Tesla Optimus Gen 3: Still not available for consumer purchase
-- Figure 03: Industrial lease only
-- SwitchBot Onero H1: Still "soon" from CES 2026 announcement
-- Boston Dynamics Atlas: Industrial/research use only
-- None of the above have become available for US consumer purchase at ≤$40K with household chore capability since last check.
+Unitree G1 still available on shop.unitree.com at $13,500 with Add to Cart working. 1X NEO still pre-order only ($20K ownership / $499/mo, deliveries "starting 2026"). SwitchBot Onero H1 still not on sale. No new consumer humanoid butler robots launched. No price changes or availability changes for any tracked robot.
