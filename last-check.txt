@@ -1,5 +1,3 @@
-June 09, 2026 - No Material Change (Deployment Fixed)
+June 09, 2026 - Answer Changed to "No"
 
-Findings: No material changes since June 8 check. Answer remains "Yes — Unitree G1."
-
-Pages deploy fixed: purged 4,107 junk files from git history and added deploy-pages permissions.
+Headline reverted from "Yes — Unitree G1" to "No" since no robot has proven chore capability. G1 promoted to frontrunner (it's actually shipping, under $40K). NEO moved to #2 (still preorder).
