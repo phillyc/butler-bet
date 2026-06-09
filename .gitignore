@@ -1,0 +1,21 @@
+# Hermes Agent junk artifacts
+browser-harness-chrome-profile/
+node-compile-cache/
+gh-cli-cache/
+hermes_sandbox_*/
+.org.chromium.Chromium.*
+org.chromium.Chromium.*/
+
+# Stale test/scratch HTML files
+HEAD_index.html
+actual.html
+actual_game.html
+final_game.html
+flaticon_page.html
+game.html
+real_index.html
+staged.html
+staged_game.html
+
+# uv cache
+uv-*.lock
