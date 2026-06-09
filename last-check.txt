@@ -1,5 +1,5 @@
-June 08, 2026 - No Material Change (Fixed GitHub Pages Deployment)
+June 09, 2026 - No Material Change (Deployment Fixed)
 
-Findings: No material changes since June 7 check. Answer remains "Yes — Unitree G1."
+Findings: No material changes since June 8 check. Answer remains "Yes — Unitree G1."
 
-GitHub Pages deployment was broken — site files were in a `butler-bet/` subdirectory but Pages serves from repo root. Moved files to correct location and updated deployment configuration. Site now showing live content instead of stale April 7 cache.
+Pages deploy fixed: purged 4,107 junk files from git history and added deploy-pages permissions.
